@@ -1,0 +1,12 @@
+Divide y venceras 
+    Consiste en resolver un problema a partir de la solicion de subproblemas del mismo tipo, pero de menor tamaño
+    Despues se comnbinan los resultados parciales para obtener la solucion completa.
+
+    Pasos para divide y venceras:
+    1. Plantear el problema de forma que pueda dividir en k subproblemas del mismo tipo, pero de menor tamaño
+    2. Resolver independientemente todos los subproblemas, ya sea directa o recursivamente
+        - Tratar de llegar a un caso base
+    3. Combinar las soluciones obtenidas en el paso anterior para contstruir la solucion del problema original
+
+
+Ej: Dado un arreglo de enteros, se te pide encontrar la suma maxiam entre todos los subaarrays posibles.

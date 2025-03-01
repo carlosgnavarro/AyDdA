@@ -1,0 +1,22 @@
+Algoritmos Voraces (Greedy)
+Greedy no te garantiza optimizacion; garantiza una respuesta razonable en un tiempo razonable
+
+Pseudo del greedy:
+
+Variables:
+candidatos : conjunto
+S : conjunto
+x : elemento
+
+Acciones
+S <- 0 // la solucion se construye en el conjunto
+candidatos <- datos
+
+Mientras tengas candidatos y aun no llegues a la solucion:
+    x <- greedy(candidatos)
+    Si el candidato es factible lo usas, de lo contrario lo descartas
+
+Si encontraste la solucion sales, de lo contrario repites
+
+Requerimientos para greedy:
+Que sea un problema de optimizacion.

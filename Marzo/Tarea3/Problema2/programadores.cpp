@@ -1,33 +1,35 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
 using namespace std;
 
+bool comparar(pair<int,int> x, pair<int,int> y)
+{
+    return x.second > y.second;
+}
+
 int main()
 {
-    vector<pair<int, int>> programmers;
+    vector<pair<int, int>> programadores;
     int n_programmers;
     while(cin >> n_programmers && n_programmers != 0)
     {
-        programmers.clear();
+        programadores.clear();
         for(int i = 0; i < n_programmers; i++)
         {
             int I, T;
             cin >> I >> T;
-            programmers.push_back({I, T});
+            programadores.push_back({I, T});
         }
-        sort(programmers.begin(), programmers.end(), [](pair<int, int> a, pair<int, int> b) {
-            return a.second > b.second;
-        });
-        int tiempo_total = 0;
-        int current_time = 0;
-        for(auto &programmer : programmers)
+        sort(programadores.begin(), programadores.end(),comparar);
+        int total = 0;
+        int temp = 0;
+        for(int i = 0; i < programadores.size(); i++)
         {
-            current_time += programmer.first;
-            tiempo_total = max(tiempo_total, current_time + programmer.second); 
+            temp += programadores[i].first;
+            total = max(total, temp + programadores[i].second); 
         }
-        cout << tiempo_total << endl;
+        cout << total << endl;
     }
     return 0;
 }

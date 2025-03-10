@@ -6,9 +6,9 @@ using namespace std;
 
 int main()
 {
-    int computerserver,kapazitat,kosten,morgenaufgaben,abendaufgaben;
+    int computerserver,kapazitat,kosten,morgenaufgaben,abendaufgaben,zusatkosten;
     vector<int> morgenaufgabenvector,abendaufgabenvector;
-    while(cin >> computerserver >> kapazitat >> kosten)
+    while(cin >> computerserver >> kapazitat >> kosten && ((computerserver != 0) && (kapazitat != 0) && (kosten != 0)))
     {
         for(int i = 0; i < computerserver; i++)
         {
@@ -22,12 +22,19 @@ int main()
         }
         sort(morgenaufgabenvector.begin(), morgenaufgabenvector.end());
         sort(abendaufgabenvector.begin(), abendaufgabenvector.end());
-        int zusatkosten = 0;
+        zusatkosten = 0;
         for(int i = 0; i < computerserver; i++)
         {
             zusatkosten +=  (morgenaufgabenvector[i] + abendaufgabenvector[computerserver - i - 1] - kapazitat) * kosten;
         }
-        cout << zusatkosten << endl;
+        if(zusatkosten > 0)
+        {
+            cout << zusatkosten << endl;
+        }
+        else
+        {
+            cout << 0 << endl;
+        }
         morgenaufgabenvector.clear();
         abendaufgabenvector.clear();
     }

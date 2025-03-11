@@ -4,43 +4,35 @@
 
 using namespace std;
 
-int main()
-{
-    // servidores, capacidad, costo, tareas matutinas, tareas vespertinas, costo adicional respectivamente
-    int computerserver,kapazitat,kosten;
-    while(cin >> computerserver >> kapazitat >> kosten && (computerserver != 0 && kapazitat != 0 && kosten != 0))
+int main() {
+    int computerservers, kapazitat, kosten;
+    while(cin >> computerservers >> kapazitat >> kosten && (computerservers != 0 && kapazitat != 0 && kosten != 0))
     {
-        vector<long long> morgenaufgaben(computerserver),abendaufgaben(computerserver);
-        // relleno de vector de tareas matutinas
-        for(int i = 0; i < computerserver; i++)
+        vector<int> morgenaufgaben(computerservers);
+        for(int i = 0; i < computerservers; i++)
         {
             cin >> morgenaufgaben[i];
         }
-        // relleno de vector de tareas vespertinas
-        for(int i = 0; i < computerserver; i++)
+        vector<int> abendaufgaben(computerservers);
+        for(int i = 0; i < computerservers; i++)
         {
             cin >> abendaufgaben[i];
         }
-        // ordenamiento de los vectores (descendente)
-        sort(morgenaufgaben.begin(), morgenaufgaben.end());
-        sort(abendaufgaben.rbegin(), abendaufgaben.rend());
-        long long zusatkosten = 0;
-        for(int i = 0; i < computerserver; i++)
+        vector<int> aufgaben = morgenaufgaben;
+        aufgaben.insert(aufgaben.end(), abendaufgaben.begin(), abendaufgaben.end());
+        sort(aufgaben.begin(), aufgaben.end());
+        vector<int> last(computerservers,0);
+        int zusatkosten = 0;
+        for(int aufgaben : aufgaben)
         {
-            long long zum = morgenaufgaben[i] + abendaufgaben[i];
-            if(zum > kapazitat)
+            int midex = min_element(last.begin(), last.end()) - last.begin();
+            last[midex] += aufgaben;
+            if(last[midex] > kapazitat)
             {
-                zusatkosten += (zum - kapazitat) * kosten;
+                zusatkosten += (last[midex] - kapazitat) * kosten;
             }
         }
-        if(zusatkosten > 0)
-        {
-            cout << zusatkosten << endl;
-        }
-        else
-        {
-            cout << 0 << endl;
-        }
+        cout << zusatkosten << endl;
     }
     return 0;
 }

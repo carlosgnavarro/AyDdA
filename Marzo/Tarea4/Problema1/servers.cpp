@@ -7,7 +7,7 @@ using namespace std;
 int main() {
     int n, u, d;
 
-    while (cin >> n >> u >> d && (n != 0 || u != 0 || d != 0)) {
+    while (cin >> n >> u >> d && (n != 0 && u != 0 && d != 0)) {
         vector<int> morning_tasks(n);
         vector<int> evening_tasks(n);
 
@@ -42,6 +42,10 @@ int main() {
                             if (total_load > u) {
                                 current_cost = (long long)(total_load - u) * d;
                             }
+
+                            cout << "Par: " << morning_tasks[j] << ", " << evening_tasks[k] << endl;
+                            cout << "Carga total: " << total_load << endl;
+                            cout << "Costo actual: " << current_cost << endl;
 
                             if (best_morning_index == -1 || current_cost < min_cost) {
                                 best_morning_index = j;

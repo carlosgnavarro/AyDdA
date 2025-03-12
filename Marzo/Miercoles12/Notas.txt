@@ -1,0 +1,17 @@
+La recursividad es un metodo en el cual la solucion de un problema depende de soluciones
+a instancias mas pequeñas del mismo problema.
+    - Permite simplificar la solucion de problemas complejos
+
+Caso base: La condicion bajo l acual la recursion termina. 
+    Es esencial para prevenir un cliclo infinito de llamadas recursivas. 
+    El caso base devuelve un valor y detiene la recursividad.
+Caso recursivo: La parte de la funcion que realiza la llamada recursiva. 
+    Es importante modificar los parametros de tal manera que el problema se acerque al caso 
+    de base en cada iteracion.
+
+    - La recursividad genera una pila de llamadas, en ella se almacena cada una de 
+    las llamadas de la funcion recursiva.
+
+Esta pila se utiliza para recordar el punto en el que cada llamada recursiva debe continuar 
+una vez que las llamadas subsecuentes alcanzan su caso base y comienzan a retornar.
+Tener cuidado de no tener una profundidad de recursion excesiva para evitar un desbordamiento de la pila.

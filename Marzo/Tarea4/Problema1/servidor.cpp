@@ -1,100 +1,63 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <cmath>
-#include <tuple>
 
 using namespace std;
 
-int compare(const tuple<int, int, double>& a, const tuple<int, int, double>& b) {
-    return get<2>(a) > get<2>(b);
-}
-
 int main()
 {
-    int computerserver, kapazitat, mehrkosten;
-    while(cin >> computerserver >> kapazitat >> mehrkosten && (computerserver != 0 && kapazitat != 0 && mehrkosten != 0))
+    // servidores, capacidad, costo, tareas matutinas, tareas vespertinas, costo adicional respectivamente
+    int computerserver,kapazitat,kosten;
+    while(cin >> computerserver >> kapazitat >> kosten && (computerserver != 0 && kapazitat != 0 && kosten != 0))
     {
-        vector<int> morgenaufgaben(computerserver);
-        vector<int> abendaufgaben(computerserver);
-
+        vector<long long> morgenaufgaben(computerserver),abendaufgaben(computerserver);
+        // relleno de vector de tareas matutinas
         for(int i = 0; i < computerserver; i++)
         {
             cin >> morgenaufgaben[i];
         }
+        // relleno de vector de tareas vespertinas
         for(int i = 0; i < computerserver; i++)
         {
             cin >> abendaufgaben[i];
         }
-
-        vector<tuple<int, int, int>> aufgabenpaare;
-        for(int i = 0; i < computerserver; i++)
-        {
-            for(int j = 0; j < computerserver; j++)
-            {
-                double kombiniertedruck = (morgenaufgaben[i] / kapazitat) + (abendaufgaben[j] / kapazitat);
-                aufgabenpaare.emplace_back(i, j, kombiniertedruck);
-            }
+        // Combine the morning and evening tasks into a single vector of pairs
+        std::vector<std::pair<long long, long long>> tasks;
+        for (int i = 0; i < computerserver; i++) {
+            tasks.push_back(std::make_pair(morgenaufgaben[i], abendaufgaben[i]));
         }
-
-        sort(aufgabenpaare.begin(), aufgabenpaare.end(), compare);
-
-        vector<bool> morgenzugewiesen(computerserver, false);
-        vector<bool> abendzugewiesen(computerserver, false);
-
-        vector<pair<int, int>> zuteilungen;
-
-        for(const auto& tp : aufgabenpaare)
-        {
-            int m_index = get<0>(tp);
-            int a_index = get<1>(tp);
-
-            if(!morgenzugewiesen[m_index] && !abendzugewiesen[a_index])
-            {
-                zuteilungen.push_back({m_index, a_index});
-                morgenzugewiesen[m_index] = true;
-                abendzugewiesen[a_index] = true;
-            }
-        }
-
-        vector<int> nichtzugewiesenmorgen;
-        vector<int> nichtzugewiesenabend;
-
-        for(int i = 0; i < computerserver; i++)
-        {
-            if(!morgenzugewiesen[i])
-            {
-                nichtzugewiesenmorgen.push_back(i);
-            }
-            if(!abendzugewiesen[i])
-            {
-                nichtzugewiesenabend.push_back(i);
-            }
-        }
-
-        sort(nichtzugewiesenmorgen.begin(), nichtzugewiesenmorgen.end(), [&](int a, int b) {
-            return morgenaufgaben[a] > morgenaufgaben[b];
+        
+        // Sort the tasks based on their combined cost
+        std::sort(tasks.begin(), tasks.end(), [](const std::pair<long long, long long>& a, const std::pair<long long, long long>& b) {
+            return a.first + a.second < b.first + b.second;
         });
-        sort(nichtzugewiesenabend.begin(), nichtzugewiesenabend.end(), [&](int a, int b) {
-            return abendaufgaben[a] > abendaufgaben[b];
-        });
-
-        int nichtzugeweisenum = min(nichtzugewiesenmorgen.size(), nichtzugewiesenabend.size());
-        for(int i = 0; i < nichtzugeweisenum; i++)
-        {
-            zuteilungen.push_back({nichtzugewiesenmorgen[i], nichtzugewiesenabend[i]});
+        
+        // Assign the tasks to the servers using a greedy algorithm
+        long long zusatkosten = 0;
+        std::vector<std::pair<long long, long long>> optimalPairs;
+        for (const auto& task : tasks) {
+            if (task.first + task.second > kapazitat) {
+                zusatkosten += (task.first + task.second - kapazitat) * kosten;
+            }
+            optimalPairs.push_back(task);
         }
-
-        double mehrkostenbetrag = 0;
-        for(const auto& z : zuteilungen)
-        {
-            int m_index = z.first;
-            int a_index = z.second;
-            double total_load = morgenaufgaben[m_index] + abendaufgaben[a_index];
-            double druck = max(0.0, total_load - kapazitat);
-            mehrkostenbetrag += druck * mehrkosten;
+        
+        // Print out the optimal pairs
+        std::cout << "Optimal pairs:" << std::endl;
+        for (const auto& pair : optimalPairs) {
+            std::cout << "Morning task: " << pair.first << ", Evening task: " << pair.second << std::endl;
         }
-        cout << round(mehrkostenbetrag) << endl;
+        
+        // Print out the additional cost
+        std::cout << "Additional cost: " << zusatkosten << std::endl;
+        if(zusatkosten > 0)
+        {
+            cout << zusatkosten << endl;
+        }
+        else
+        {
+            cout << 0 << endl;
+        }
     }
     return 0;
 }

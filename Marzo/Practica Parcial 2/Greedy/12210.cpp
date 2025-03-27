@@ -10,7 +10,7 @@ int main() {
         int bachelors[n];
         int spinsters[m];
 
-        int minBachelorAge = 100; // Initialize with a large value
+        int minBachelorAge = 100;
         for (int i = 0; i < n; ++i) {
             cin >> bachelors[i];
             minBachelorAge = min(minBachelorAge, bachelors[i]);

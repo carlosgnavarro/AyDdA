@@ -1,66 +1,45 @@
 #include <iostream>
 #include <vector>
-#include <cstddef>
-#include <string>
 
 using namespace std;
 
-bool posible(string cadena, char c)
-{
-    
-    int position = cadena.find_last_of(c);
-    while(position != string::npos)
-    {
-        bool valido = false;
-        int a = cadena.size() - 1;
-        int b = position - 1;
-        for(int i = 0; !valido and (b-i) > 0 and (a-i) > position; i--)
-        {
-            if(cadena[i] == cadena[position-i])
-            {
-                valido = true;
-            }
-            if(valido == false)
-            {
-                return false;
-            }
-            position = cadena.find_last_of(c,position-1);   
-        }
+// Function to calculate binomial coefficient (n choose k)
+long long binomialCoeff(int n, int k) {
+    if (k > n) return 0;
+    if (k == 0 || k == n) return 1;
+    if (k > n / 2) k = n - k; // Optimization: nCk = nC(n-k)
+
+    long long res = 1;
+    for (int i = 0; i < k; ++i) {
+        res = res * (n - i);
+        res = res / (i + 1);
     }
-    return true;
+    return res;
 }
 
-void freak(int n, int L, int count, string &cadena)
-{
-    if(count == n)
-    {
-        cout << cadena;
-        return;
-    }
-    for(char c = 'A'; c < 'A' + L; c++)
-    {
-        if(posible(cadena,c))
-        {
-            cadena.push_back(c);
-            freak(n,L,count++,cadena);
-            cadena.pop_back();
+// Function to calculate ordered Bell number using the recursive formula
+long long orderedBell(int n) {
+    if (n == 0) return 1;
+
+    vector<long long> a(n + 1);
+    a[0] = 1;
+
+    for (int i = 1; i <= n; ++i) {
+        a[i] = 0;
+        for (int j = 1; j <= i; ++j) {
+            a[i] += binomialCoeff(i, j) * a[i - j];
         }
     }
+    return a[n];
 }
 
-int main()
-{
-    int n,L;
-    while(true)
-    {
-        cin >> n >> L;
-        if(!n && !L)
-        {
-            return 0;
-        }
-        int count = 0;
-        string cadena;
-        freak(n,L,count,cadena);
+int main() {
+    int cant;
+    cin >> cant;
+    while (cant--) {
+        int n;
+        cin >> n;
+        cout << orderedBell(n) << endl;
     }
     return 0;
 }
